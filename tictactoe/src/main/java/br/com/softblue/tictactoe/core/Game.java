@@ -14,13 +14,21 @@ public class Game {
 		UI.printGameTitle();
 		
 		
-		board.print();
-		
-		//UI.readInput("Nome do Jogador:");
+		for (int i = 0; i < players.length; i++) {
+			
+			players[i] = createPlayer(i);
+		}
 		
 	}
 	
-	private createPlayer(int index) {
-		UI.readInput("Jogador")
+	private Player createPlayer(int index) {
+		String name = UI.readInput("Jogador " + (index + 1) + " => ");
+		char symbol = Constants.SYMBOL_PLAYERS[index];
+		Player player = new Player(name, board, symbol );
+		
+		UI.printText("O jogador '" + name + "' vai usar o simbolo '" + symbol + "'");
+		
+		return player;
+		
 	}
 }
