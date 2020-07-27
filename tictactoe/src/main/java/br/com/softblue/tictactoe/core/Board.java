@@ -52,11 +52,17 @@ public class Board {
 		return true;
 	}
 
-	public boolean play(Player player, Move move) {
+	public boolean play(Player player, Move move) throws InvalidMoveException {
 		int i = move.getI();
 		int j = move.getJ();
 
-		// TODO Validar os movimentos
+		if (i < 0 || j < 0 || i >= Constants.BOARD_SIZE || j >= Constants.BOARD_SIZE) {
+			throw new InvalidMoveException("O intervalo da jogada é inválido");
+		}
+		
+		if (matrix[i][j] != ' ') {
+			throw new InvalidMoveException("Esta jogada já foi realizada");
+		}
 
 		matrix[i][j] = player.getSymbol();
 

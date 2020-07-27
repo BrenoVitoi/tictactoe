@@ -1,6 +1,7 @@
 package br.com.softblue.tictactoe.core;
 
 import br.com.softblue.tictactoe.Constants;
+import br.com.softblue.tictactoe.score.ScoreManager;
 import br.com.softblue.tictactoe.ui.UI;
 
 public class Game {
@@ -8,8 +9,12 @@ public class Game {
 	private Board board = new Board();
 	private Player[] players = new Player[Constants.SYMBOL_PLAYERS.length];
 	private int currentPlayerIndex = -1;
+	private ScoreManager scoreManager;
 
+	@SuppressWarnings("unused")
 	public void play() {
+		scoreManager = createScoreManager();
+		
 		UI.printGameTitle();
 
 		for (int i = 0; i < players.length; i++) {
@@ -44,10 +49,13 @@ public class Game {
 			}
 		}
 
+		
 		if (winner == null) {
 			UI.printText("O jogo terminou empatado");
 		} else {
 			UI.printText("O jogodor '" + winner.getName() + "' venceu o jogo!");
+			
+			scoreManager.saveScore(winner);
 		}
 		
 		board.print();
@@ -59,6 +67,13 @@ public class Game {
 		String name = UI.readInput("Jogador " + (index + 1) + " => ");
 		char symbol = Constants.SYMBOL_PLAYERS[index];
 		Player player = new Player(name, board, symbol);
+		
+		Integer score = scoreManager.getScore(player);
+		
+		if(score != null) {
+			
+			UI.printText("O jogador '" + player.getName() + "' já possui " + score + " vitória(s)!");
+		}
 
 		UI.printText("O jogador '" + name + "' vai usar o simbolo '" + symbol + "'");
 
@@ -80,5 +95,10 @@ public class Game {
 
 		currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
 		return players[currentPlayerIndex];
+	}
+	
+	private ScoreManager createScoreManager() {
+		//TODO Retornar tipo correto
+		return null;
 	}
 }
